@@ -47,14 +47,29 @@ namespace Business.Concrete
             }
         }
 
+        public IResult Delete(Rental rental)
+        {
+            throw new NotImplementedException();
+        }
+
         public IDataResult<List<Rental>> GetAll()
         {
             return new SuccessDataResult<List<Rental>>(_rentalDal.GetAll());
         }
 
+        public IDataResult<Rental> GetById(int Id)
+        {
+            throw new NotImplementedException();
+        }
+
         public IDataResult<List<RentalDetailDto>> GetRentalDetails()
         {
             return new SuccessDataResult<List<RentalDetailDto>>(_rentalDal.GetRentalDetails());
+        }
+
+        public IResult Update(Rental rental)
+        {
+            throw new NotImplementedException();
         }
 
         public IResult UpDateReturnDate(Rental rental)

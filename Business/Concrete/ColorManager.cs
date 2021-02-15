@@ -34,7 +34,7 @@ namespace Business.Concrete
 
         public IDataResult<Color> GetById(int ColorId)
         {
-            throw new NotImplementedException();
+            return new SuccessDataResult<Color>(_colorDal.Get(co => co.ColorId == ColorId));
         }
 
         public IResult Update(Color color)
