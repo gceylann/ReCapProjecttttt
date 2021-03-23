@@ -23,59 +23,42 @@ namespace Business.Concrete
 
         public IResult Add(Rental rental)
         {
-
-            if (rental.ReturnDate==null)
-            {
-                return new ErrorResult(Messages.Invalid);
-            }
-            else
+            if (rental.ReturnDate != DateTime.MinValue)
             {
                 _rentalDal.Add(rental);
                 return new SuccessResult(Messages.Added);
             }
-        }
-
-        public IResult CheckReturnDate(Rental rental)
-        {
-            if (rental.ReturnDate == null)
-            {
-                return new ErrorResult(Messages.Invalid);
-            }
             else
             {
-                return new SuccessResult(Messages.Success);
+                return new ErrorResult();
             }
         }
 
         public IResult Delete(Rental rental)
         {
-            throw new NotImplementedException();
+            _rentalDal.Delete(rental);
+            return new SuccessResult(Messages.Deleted);
         }
 
         public IDataResult<List<Rental>> GetAll()
         {
-            return new SuccessDataResult<List<Rental>>(_rentalDal.GetAll());
-        }
-
-        public IDataResult<Rental> GetById(int Id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IDataResult<List<RentalDetailDto>> GetRentalDetails()
-        {
-            return new SuccessDataResult<List<RentalDetailDto>>(_rentalDal.GetRentalDetails());
+            return new SuccessDataResult<List<Rental>>(_rentalDal.GetAll(), Messages.Listed);
         }
 
         public IResult Update(Rental rental)
         {
-            throw new NotImplementedException();
+            _rentalDal.Update(rental);
+            return new SuccessResult(Messages.Updated);
         }
 
-        public IResult UpDateReturnDate(Rental rental)
+        public IDataResult<List<RentalDetailDto>> GetRentalDetails()
         {
-            _rentalDal.Update(rental);
-            return new SuccessResult(Messages.Success);
+            return new SuccessDataResult<List<RentalDetailDto>>(_rentalDal.GetRentalDetails(), Messages.Listed);
+        }
+
+        public object GetById(int id)
+        {
+            return _rentalDal.Get(r => r.Id == id); 
         }
     }
 }

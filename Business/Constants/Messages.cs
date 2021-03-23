@@ -14,7 +14,7 @@ namespace Business.Constants
         public static string Success = "işlem Başarılı";
         public static string CarPriceInvalid = "Ürün fiyatı geçersiz";
         public static string MaintenanceTime = "Sistem bakımda";
-        public static string Listed= "Araçlar listelendi";
+        public static string Listed= "Listelendi";
         public static string Deleted = "Silindi";
         public static string Updated = "Güncellendi";
         public static string UserNameInvalid = "Kullanıcı adı en az 2 karakter olmalıdır";
