@@ -5,6 +5,7 @@ using DataAccess.Abstract;
 using Entities.Concrete;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Business.Concrete
@@ -35,12 +36,12 @@ namespace Business.Concrete
             return new SuccessResult(Messages.Updated);
         }
 
-        IDataResult<List<Brand>> IBrandService.GetAll()
+        public IDataResult<List<Brand>> GetAll()
         {
-            return new SuccessDataResult<List<Brand>>(_brandDal.GetAll(), Messages.Listed);
+            return new SuccessDataResult<List<Brand>>(_brandDal.GetAll().ToList(),Messages.Listed);
         }
 
-        IDataResult<Brand> IBrandService.GetById(int BrandId)
+        public IDataResult<Brand> GetById(int BrandId)
         {
             return new SuccessDataResult<Brand>(_brandDal.Get(b => b.BrandId == BrandId));
         }
