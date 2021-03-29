@@ -19,7 +19,7 @@ namespace ConsoleUI
             {
                 foreach (var rental in result.Data)
                 {
-                    Console.WriteLine(rental.CarId + " " +rental.RentDate + " " + rental.ReturnDate);
+                    Console.WriteLine(rental.CarBrandName + " " +rental.RentDate + " " + rental.ReturnDate);
                 }
             }
             else

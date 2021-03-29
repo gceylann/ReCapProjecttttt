@@ -44,7 +44,7 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Car>>(_carDal.GetAll(), Messages.Listed);
         }
 
-        
+ 
         public IDataResult<List<Car>> GetCarsByBrandId(int brandId)
         {
             return new SuccessDataResult<List<Car>>(_carDal.GetAll(car => car.BrandId == brandId), Messages.Listed);
@@ -76,10 +76,42 @@ namespace Business.Concrete
             return new ErrorResult(Messages.Updated);
         }
 
-        public IDataResult<List<CarDetailDto>> GetCarDetails()
+
+        public IDataResult<List<CarDetailDto>> GetCarDetailById(int carId)
         {
-            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails(), Messages.Listed);
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails(c => c.CarId == carId));
         }
 
+        public IDataResult<List<CarDetailDto>> GetCarDetails()
+        {
+            var carDetails = _carDal.GetCarDetails();
+            foreach (var car in carDetails)
+            {
+                if (car.ImagePath == null)
+                {
+                    car.ImagePath = @"\WebAPI\Resources\Images\logo.jpg";
+                }
+            }
+            return new SuccessDataResult<List<CarDetailDto>>(carDetails);
+        }
+
+        public IDataResult<List<CarDetailDto>> GetCarDetailsByBrandId(int brandId)
+        {
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails(c => c.BrandId == brandId));
+        }
+
+        public IDataResult<List<CarDetailDto>> GetCarDetailsByColorId(int colorId)
+        {
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails(c => c.ColorId == colorId));
+        }
+
+        [TransactionScopeAspect]
+        public IResult TransactionalOperation(Car car)
+        {
+            _carDal.Update(car);
+            _carDal.Add(car);
+            return new SuccessResult(Messages.Updated);
+
+        }
     }
 }
