@@ -12,12 +12,10 @@ namespace WebAPI.Controllers
 
         IPaymentService _paymentService;
 
-
         public PaymentsController(IPaymentService paymentService)
         {
             _paymentService = paymentService;
         }
-
 
         [HttpPost("add")]
         public IActionResult Add(Payment payment)

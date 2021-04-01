@@ -22,41 +22,66 @@ namespace Business.Concrete
         public IResult Add(User user)
         {
             _userDal.Add(user);
+
             return new SuccessResult(Messages.Added);
         }
 
         public IResult Delete(User user)
         {
             _userDal.Delete(user);
+
             return new SuccessResult(Messages.Deleted);
-        }
-
-        public IDataResult<List<User>> GetAll()
-        {
-            return new SuccessDataResult<List<User>>(_userDal.GetAll());
-        }
-
-        public IDataResult<List<User>> GetByEmail(string email)
-        {
-            return new SuccessDataResult<List<User>>(_userDal.GetAll(c => c.Email == email));
-        }
-
-
-        public User GetByMail(string email)
-        {
-            return _userDal.Get(u => u.Email == email);
-        }
-
-        public List<OperationClaim> GetClaims(User user)
-        {
-            return _userDal.GetClaims(user);
         }
 
         public IResult Update(User user)
         {
             _userDal.Update(user);
-            return new SuccessResult(Messages.Updated);
 
+            return new SuccessResult(Messages.Updated);
+        }
+
+        public IResult UpdateSpecificInfos(User user)
+        {
+            User userInfos = GetById(user.Id).Data;
+
+            userInfos.FirstName = user.FirstName;
+            userInfos.LastName = user.LastName;
+            userInfos.Email = user.Email;
+
+            _userDal.Update(userInfos);
+
+            return new SuccessResult(Messages.Updated);
+        }
+
+        public IDataResult<List<User>> GetAll()
+        {
+            return new SuccessDataResult<List<User>>(_userDal.GetAll(), Messages.Listed);
+        }
+
+        public IDataResult<User> GetById(int userId)
+        {
+            return new SuccessDataResult<User>(_userDal.Get(u => u.Id == userId));
+        }
+
+
+        public IDataResult<User> GetByEmail(string email)
+        {
+            User user = _userDal.Get(u => u.Email.ToLower() == email.ToLower());
+
+            if (user == null)
+            {
+                return new ErrorDataResult<User>(Messages.NotListed);
+            }
+            else
+            {
+                return new SuccessDataResult<User>(user, Messages.Listed);
+            }
+        }
+
+
+        public IDataResult<List<OperationClaim>> GetClaims(User user)
+        {
+            return new SuccessDataResult<List<OperationClaim>>(_userDal.GetClaims(user));
         }
     }
 }

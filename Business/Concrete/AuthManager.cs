@@ -38,23 +38,26 @@ namespace Business.Concrete
 
         public IDataResult<User> Login(UserForLoginDto userForLoginDto)
         {
-            var userToCheck = _userService.GetByMail(userForLoginDto.Email);
-            if (userToCheck == null)
+            var userToCheck = _userService.GetByEmail(userForLoginDto.Email);
+
+            if (userToCheck.Data == null)
             {
                 return new ErrorDataResult<User>(Messages.UserNotFound);
             }
 
-            if (!HashingHelper.VerifyPasswordHash(userForLoginDto.Password, userToCheck.PasswordHash, userToCheck.PasswordSalt))
+            if (!HashingHelper.VerifyPasswordHash(userForLoginDto.Password,
+                                                  userToCheck.Data.PasswordHash,
+                                                  userToCheck.Data.PasswordSalt))
             {
-                return new ErrorDataResult<User>(Messages.PasswordError);
+                return new ErrorDataResult<User>(Messages.WrongPassword);
             }
 
-            return new SuccessDataResult<User>(userToCheck, Messages.SuccessfulLogin);
+            return new SuccessDataResult<User>(userToCheck.Data, Messages.Success);
         }
 
         public IResult UserExists(string email)
         {
-            if (_userService.GetByMail(email) != null)
+            if (_userService.GetByEmail(email) != null)
             {
                 return new ErrorResult(Messages.UserAlreadyExists);
             }
@@ -64,8 +67,34 @@ namespace Business.Concrete
         public IDataResult<AccessToken> CreateAccessToken(User user)
         {
             var claims = _userService.GetClaims(user);
-            var accessToken = _tokenHelper.CreateToken(user, claims);
+
+            var accessToken = _tokenHelper.CreateToken(user, claims.Data);
+
             return new SuccessDataResult<AccessToken>(accessToken, Messages.AccessTokenCreated);
         }
+
+        public IResult ChangePassword(UserForChangingPasswordDto userForChangingPasswordDto)
+        {
+            User userInfos = _userService.GetById(userForChangingPasswordDto.Id).Data;
+
+            if (!HashingHelper.VerifyPasswordHash(userForChangingPasswordDto.CurrentPassword,
+                                                  userInfos.PasswordHash,
+                                                  userInfos.PasswordSalt))
+            {
+                return new ErrorResult(Messages.WrongPassword);
+            }
+
+            HashingHelper.CreatePasswordHash(userForChangingPasswordDto.NewPassword,
+                                             out byte[] passwordHash,
+                                             out byte[] passwordSalt);
+
+            userInfos.PasswordHash = passwordHash;
+            userInfos.PasswordSalt = passwordSalt;
+
+            _userService.Update(userInfos);
+
+            return new SuccessResult(Messages.Updated);
+        }
+
     }
 }

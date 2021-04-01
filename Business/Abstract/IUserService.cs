@@ -12,12 +12,11 @@ namespace Business.Abstract
         IResult Add(User user);
         IResult Delete(User user);
         IResult Update(User user);
-
+        IResult UpdateSpecificInfos(User user);
         IDataResult<List<User>> GetAll();
-       
-        List<OperationClaim> GetClaims(User user);
-
-        User GetByMail(string email);
+        IDataResult<User> GetById(int userId);
+        IDataResult<User> GetByEmail(string email);
+        IDataResult<List<OperationClaim>> GetClaims(User user);
 
     }
 }

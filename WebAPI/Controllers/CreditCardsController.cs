@@ -12,12 +12,10 @@ namespace WebAPI.Controllers
 
         ICreditCardService _creditCardService;
 
-
         public CreditCardsController(ICreditCardService creditCardService)
         {
             _creditCardService = creditCardService;
         }
-
 
         [HttpPost("add")]
         public IActionResult Add(CreditCard creditCard)

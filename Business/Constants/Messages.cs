@@ -29,5 +29,9 @@ namespace Business.Constants
         public static string UserRegistered = "Kullanıcı başarıyla kaydedildi";
         public static string AccessTokenCreated = "Access token başarıyla oluşturuldu";
         public static string CardIsExists="Kart tanımlı";
+        public static string NotListed="Listelenemedi";
+        public static string WrongPassword="Şifre Yanlış";
+        public static string CarIsAlreadyRented="Araç kiralanmış";
+        public static string FindeksScoreIsNotEnough="Findeks Skorunuz Yeterli Değil";
     }
 }

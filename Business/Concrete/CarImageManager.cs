@@ -34,7 +34,7 @@ namespace Business.Concrete
             }
 
             carImage.ImagePath = ImageFileHelper.Add(file);
-            carImage.Date = DateTime.Now;
+            carImage.ImageDate = DateTime.Now;
             _carImageDal.Add(carImage);
             return new SuccessResult();
 
@@ -43,7 +43,7 @@ namespace Business.Concrete
 
         public IResult Update(IFormFile formFile, CarImage carImage)
         {
-            carImage.Date = DateTime.Now;
+            carImage.ImageDate = DateTime.Now;
             carImage.ImagePath = ImageFileHelper.Update(_carImageDal.Get(c => c.CarId == carImage.CarId).ImagePath, formFile);
             _carImageDal.Update(carImage);
             return new SuccessResult();
@@ -65,7 +65,7 @@ namespace Business.Concrete
 
         public IDataResult<CarImage> GetById(int Id)
         {
-            return new SuccessDataResult<CarImage>(_carImageDal.Get(c => c.ImageId == Id));
+            return new SuccessDataResult<CarImage>(_carImageDal.Get(c => c.CarImageId == Id));
         }
 
 
